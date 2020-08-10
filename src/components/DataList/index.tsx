@@ -1,20 +1,18 @@
 import React, { useContext } from "react";
 import { GithubDataStateContext } from "../../context";
 import DataListGroup from "./DataListGroup";
-import NotFound from "../Pages/NotFound";
 
 interface DataListProps {
   type: string;
 }
 
-const DataList = (props: DataListProps): JSX.Element => {
+const DataList = (props: DataListProps): JSX.Element | null => {
   const { state } = useContext(GithubDataStateContext);
   const { type } = props;
 
   const items = type === "repos" ? state.repository : state.organization;
 
-  if (!state.isLoading && (!items || items?.length === 0))
-    return <NotFound type={type} />;
+  if (state.isLoading) return null;
 
   return (
     <DataListGroup
